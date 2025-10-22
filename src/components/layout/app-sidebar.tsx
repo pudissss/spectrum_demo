@@ -54,15 +54,16 @@ export function AppSidebar() {
             const isActive = pathname === item.href;
             return (
               <SidebarMenuItem key={item.href}>
-                <Link href={item.href} legacyBehavior passHref>
-                  <SidebarMenuButton
-                    isActive={isActive}
-                    icon={<item.icon />}
-                    tooltip={{ children: item.label }}
-                  >
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  icon={<item.icon />}
+                  tooltip={{ children: item.label }}
+                >
+                  <Link href={item.href}>
                     <span>{item.label}</span>
-                  </SidebarMenuButton>
-                </Link>
+                  </Link>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             );
           })}
