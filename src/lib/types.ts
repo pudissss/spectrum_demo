@@ -23,12 +23,18 @@ export interface WeeklyLog {
 
 export type GrievanceStatus = 'Submitted' | 'In Progress' | 'Resolved' | 'Closed';
 
+export type GrievanceType = 'Personal' | 'Infrastructure' | 'Academics';
+
 export interface Grievance {
   id: string;
   submittedAt: string;
   description: string;
   status: GrievanceStatus;
   assignedTo?: string; 
+  idNumber: string;
+  grievanceType: GrievanceType;
+  block?: string;
+  roomNo?: string;
 }
 
 export interface FocusRoomBooking {
