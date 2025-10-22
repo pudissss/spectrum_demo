@@ -30,6 +30,9 @@ export function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>(ALL_EXPENSES);
   const [isLoading, setIsLoading] = useState(false);
 
+  const isTreasurer = user?.role === 'Treasurer';
+  const canView = user?.role === 'Treasurer' || user?.role === 'President' || user?.role === 'HOD';
+
   const form = useForm<z.infer<typeof expenseSchema>>({
     resolver: zodResolver(expenseSchema),
     defaultValues: {
@@ -40,7 +43,7 @@ export function ExpenseTracker() {
   });
 
   const onSubmit = async (values: z.infer<typeof expenseSchema>) => {
-    if (user?.role !== "Treasurer") {
+    if (!isTreasurer) {
       toast({ variant: "destructive", title: "Unauthorized" });
       return;
     }
@@ -64,14 +67,14 @@ export function ExpenseTracker() {
   const totalExpenses = expenses.filter(e => e.type === 'Expense').reduce((acc, e) => acc + e.amount, 0);
   const balance = totalIncome - totalExpenses;
 
-  if (user?.role !== 'Treasurer') {
+  if (!canView) {
     return (
         <Card>
             <CardHeader>
                 <CardTitle>Access Denied</CardTitle>
             </CardHeader>
             <CardContent>
-                <p>Only the Treasurer can access this page.</p>
+                <p>You do not have permission to view this page.</p>
             </CardContent>
         </Card>
     )
@@ -138,70 +141,72 @@ export function ExpenseTracker() {
           </CardContent>
         </Card>
       </div>
-      <div>
-        <Card>
-          <CardHeader>
-            <CardTitle>Log Transaction</CardTitle>
-            <CardDescription>Add a new income or expense entry.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g., Sponsorship, Event costs" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Amount</FormLabel>
-                      <FormControl>
-                        <Input type="number" placeholder="100.00" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Type</FormLabel>
-                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                         <FormControl>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select transaction type" />
-                            </SelectTrigger>
-                         </FormControl>
-                         <SelectContent>
-                            <SelectItem value="Income">Income</SelectItem>
-                            <SelectItem value="Expense">Expense</SelectItem>
-                         </SelectContent>
-                       </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? <Loader2 className="animate-spin" /> : "Log Transaction"}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
+      {isTreasurer && (
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Log Transaction</CardTitle>
+              <CardDescription>Add a new income or expense entry.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Description</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g., Sponsorship, Event costs" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="amount"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Amount</FormLabel>
+                        <FormControl>
+                          <Input type="number" placeholder="100.00" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Type</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                              <SelectTrigger>
+                                  <SelectValue placeholder="Select transaction type" />
+                              </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                              <SelectItem value="Income">Income</SelectItem>
+                              <SelectItem value="Expense">Expense</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? <Loader2 className="animate-spin" /> : "Log Transaction"}
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
