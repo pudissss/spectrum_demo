@@ -19,6 +19,7 @@ import {
   MessageSquareWarning,
   Users,
   DollarSign,
+  User,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { UserNav } from "./user-nav";
@@ -31,6 +32,7 @@ const menuItems = [
   { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
   { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "Vice President", "HOD"] },
   { href: "/dashboard/grievances", label: "Grievances", icon: MessageSquareWarning, isGrievance: true },
+  { href: "/dashboard/profile", label: "Profile", icon: User },
 ];
 
 export function AppSidebar() {
@@ -60,14 +62,14 @@ export function AppSidebar() {
             if (item.isGrievance) {
               const isPresidential = user.role === 'President' || user.role === 'Vice President';
               const isHOD = user.role === 'HOD';
-              const isResolvenceDirector = user.role === 'Director' && user.wing === 'Resolvence';
+              const isResolvenceMember = user.wing === 'Resolvence';
 
-              if (!isPresidential && !isHOD && !isResolvenceDirector) {
+              if (!isPresidential && !isHOD && !isResolvenceMember) {
                 return null;
               }
             }
             
-            const isActive = pathname === item.href;
+            const isActive = pathname.startsWith(item.href) && (item.href !== '/dashboard' || pathname === '/dashboard');
             return (
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton

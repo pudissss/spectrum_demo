@@ -19,11 +19,13 @@ import { Button } from "../ui/button";
 import { LogOut, User as UserIcon, ChevronsUpDown, Check, Users } from "lucide-react";
 import { UserRole } from "@/lib/types";
 import { ALL_USERS } from "@/lib/data";
+import { useRouter } from "next/navigation";
 
 const availableRoles = Array.from(new Set(ALL_USERS.map(u => u.role)));
 
 export function UserNav() {
   const { user, logout, switchRole } = useAuth();
+  const router = useRouter();
 
   if (!user) {
     return null;
@@ -63,7 +65,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
             <UserIcon className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </DropdownMenuItem>
