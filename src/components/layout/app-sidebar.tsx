@@ -26,10 +26,10 @@ import { Logo } from "../icons/logo";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "HOD", "Director"] },
+  { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "Vice President", "HOD", "Director"] },
   { href: "/dashboard/focus-room", label: "Focus Room", icon: CalendarCheck },
-  { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "HOD", "Director", "Lead"] },
-  { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "HOD"] },
+  { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
+  { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "Vice President", "HOD"] },
   { href: "/dashboard/grievances", label: "Grievances", icon: MessageSquareWarning, isGrievance: true },
 ];
 
@@ -58,10 +58,11 @@ export function AppSidebar() {
             }
 
             if (item.isGrievance) {
-              const isPresidentOrHOD = user.role === 'President' || user.role === 'HOD';
+              const isPresidential = user.role === 'President' || user.role === 'Vice President';
+              const isHOD = user.role === 'HOD';
               const isResolvenceMember = user.wing === 'Resolvence';
 
-              if (!isPresidentOrHOD && !isResolvenceMember) {
+              if (!isPresidential && !isHOD && !isResolvenceMember) {
                 return null;
               }
             }

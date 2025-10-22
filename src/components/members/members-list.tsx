@@ -12,6 +12,7 @@ import { useMemo } from "react";
 const getRoleBadgeVariant = (role: User['role']) => {
     switch (role) {
         case "President":
+        case "Vice President":
         case "HOD":
             return "default";
         case "Director":
@@ -29,12 +30,12 @@ export function MembersList() {
     const visibleMembers = useMemo(() => {
         if (!user) return [];
 
-        if (user.role === 'President' || user.role === 'HOD') {
+        if (user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD') {
             return ALL_USERS;
         }
 
         if (user.role === 'Director' && user.wing) {
-            const leadershipRoles: UserRole[] = ['President', 'Secretary', 'Treasurer'];
+            const leadershipRoles: UserRole[] = ['President', 'Vice President', 'Secretary', 'Treasurer'];
             return ALL_USERS.filter(member => 
                 leadershipRoles.includes(member.role) || member.wing === user.wing
             );

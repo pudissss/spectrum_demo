@@ -10,7 +10,7 @@ export default function LogsPage() {
 
     if (!user) return null;
 
-    const canViewAll = user.role === 'President' || user.role === 'HOD';
+    const canViewAll = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
     const isDirector = user.role === 'Director';
     const isLead = user.role === 'Lead';
 

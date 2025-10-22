@@ -31,7 +31,7 @@ export function ExpenseTracker() {
   const [isLoading, setIsLoading] = useState(false);
 
   const isTreasurer = user?.role === 'Treasurer';
-  const canView = user?.role === 'Treasurer' || user?.role === 'President' || user?.role === 'HOD';
+  const canView = user?.role === 'Treasurer' || user?.role === 'President' || user?.role === 'Vice President' || user?.role === 'HOD';
 
   const form = useForm<z.infer<typeof expenseSchema>>({
     resolver: zodResolver(expenseSchema),

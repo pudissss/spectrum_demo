@@ -17,7 +17,7 @@ export default function DashboardPage() {
 
   if (!user) return null;
 
-  const isPrivileged = user.role === 'President' || user.role === 'HOD';
+  const isPrivileged = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
 
   return (
     <div className="flex flex-col gap-8">

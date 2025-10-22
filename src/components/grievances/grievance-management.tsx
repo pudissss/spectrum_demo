@@ -38,10 +38,11 @@ export function GrievanceManagement() {
 
     const filteredGrievances = useMemo(() => {
         if (!user) return [];
-        const isPresidentOrHOD = user.role === 'President' || user.role === 'HOD';
+        const isPresidential = user.role === 'President' || user.role === 'Vice President';
+        const isHOD = user.role === 'HOD';
         const isDirector = user.role === 'Director';
 
-        if (isPresidentOrHOD || (isDirector && user.wing === 'Resolvence')) {
+        if (isPresidential || isHOD || (isDirector && user.wing === 'Resolvence')) {
             return grievances;
         }
 
@@ -53,7 +54,7 @@ export function GrievanceManagement() {
     }, [grievances, user]);
 
 
-    const isResolvenceMember = user?.wing === 'Resolvence' || user?.role === 'President' || user?.role === 'HOD';
+    const isResolvenceMember = (user?.role === 'President' || user?.role === 'Vice President' || user?.role === 'HOD') || user?.wing === 'Resolvence';
     const leads = ALL_USERS.filter(u => u.role === 'Lead' && u.wing === 'Resolvence');
 
     const handleUpdate = (id: string, newStatus?: GrievanceStatus, assignedTo?: string) => {

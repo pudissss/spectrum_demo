@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "../icons/logo";
-import { ALL_USERS } from "@/lib/data";
 import { UserRole } from "@/lib/types";
 
 export function LoginForm() {
@@ -81,6 +80,7 @@ export function LoginForm() {
         <p className="text-sm text-muted-foreground">Or quick login as:</p>
         <div className="grid grid-cols-3 gap-2 w-full">
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('President')}>President</Button>
+            <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Vice President')}>Vice President</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('HOD')}>HOD</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Director')}>Director</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Lead')}>Lead</Button>

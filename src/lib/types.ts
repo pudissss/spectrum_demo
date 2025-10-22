@@ -1,4 +1,4 @@
-export type UserRole = "President" | "HOD" | "Director" | "Lead" | "Treasurer" | "Secretary" | "Member";
+export type UserRole = "President" | "Vice President" | "HOD" | "Director" | "Lead" | "Treasurer" | "Secretary" | "Member";
 
 export type Wing = "Alumni & IRP" | "Tech & Society" | "Academics" | "Events" | "Resolvence" | "Provision" | "Voice" | "Strategic Planning";
 

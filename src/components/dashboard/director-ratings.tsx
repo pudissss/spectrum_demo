@@ -12,10 +12,10 @@ export function DirectorRatings() {
     const { user } = useAuth();
     
     const directors = ALL_USERS.filter(u => u.role === 'Director');
-    const isPresident = user?.role === 'President';
+    const isPresidential = user?.role === 'President' || user?.role === 'Vice President';
 
     const handleRating = (directorId: string, rating: number) => {
-        if (!isPresident) return;
+        if (!isPresidential) return;
         // In a real app, this would be a server action
         console.log(`President rated director ${directorId} with ${rating} stars`);
         // Here you would update the state or refetch data
@@ -26,7 +26,7 @@ export function DirectorRatings() {
             <CardHeader>
                 <CardTitle>Director Star Ratings</CardTitle>
                 <CardDescription>
-                    {isPresident ? "You can rate the directors here." : "Official ratings for all wing directors."}
+                    {isPresidential ? "You can rate the directors here." : "Official ratings for all wing directors."}
                 </CardDescription>
             </CardHeader>
             <CardContent>
@@ -57,7 +57,7 @@ export function DirectorRatings() {
                                 <TableCell className="text-right">
                                     <StarRating 
                                         rating={director.rating || 0} 
-                                        isEditable={isPresident} 
+                                        isEditable={isPresidential} 
                                         onRate={(rating) => handleRating(director.id, rating)}
                                     />
                                 </TableCell>

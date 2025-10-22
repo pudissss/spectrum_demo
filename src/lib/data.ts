@@ -13,6 +13,7 @@ export const WINGS: Wing[] = [
 
 const users: User[] = [
   { id: 'user-pres', name: 'Alex Thompson', email: 'president@focus.com', role: 'President' },
+  { id: 'user-vp', name: 'Samantha Miller', email: 'vp@focus.com', role: 'Vice President' },
   { id: 'user-hod', name: 'Ben Carter', email: 'hod@focus.com', role: 'HOD' },
   { id: 'user-sec', name: 'Catherine Doe', email: 'secretary@focus.com', role: 'Secretary' },
   { id: 'user-tres', name: 'David Lee', email: 'treasurer@focus.com', role: 'Treasurer' },
