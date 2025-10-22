@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Megaphone, Image as ImageIcon, X } from "lucide-react";
+import { Loader2, Megaphone, X } from "lucide-react";
 import { Announcement } from "@/lib/types";
 import { ALL_ANNOUNCEMENTS } from "@/lib/data";
 import Image from "next/image";
 import { Label } from "../ui/label";
+import { Switch } from "../ui/switch";
 
 export function AnnouncementForm() {
     const { user } = useAuth();
@@ -20,6 +21,7 @@ export function AnnouncementForm() {
     const [content, setContent] = useState("");
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [forDirectorsOnly, setForDirectorsOnly] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const canAnnounce = user?.role === 'President' || user?.role === 'Vice President' || user?.role === 'HOD';
@@ -43,7 +45,6 @@ export function AnnouncementForm() {
     const removeImage = () => {
         setImageFile(null);
         setImagePreview(null);
-        // Also reset the file input
         const fileInput = document.getElementById('image-upload') as HTMLInputElement;
         if(fileInput) fileInput.value = '';
     }
@@ -62,8 +63,6 @@ export function AnnouncementForm() {
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // In a real app, you'd upload the imageFile to a storage service and get a URL.
-        // For this mock, we'll just use the preview URL if it exists.
         const imageUrl = imagePreview;
 
         const newAnnouncement: Announcement = {
@@ -74,6 +73,7 @@ export function AnnouncementForm() {
             authorName: user.name,
             authorRole: user.role,
             imageUrl: imageUrl || undefined,
+            forDirectorsOnly,
         };
 
         ALL_ANNOUNCEMENTS.unshift(newAnnouncement);
@@ -82,9 +82,10 @@ export function AnnouncementForm() {
         setTitle("");
         setContent("");
         removeImage();
+        setForDirectorsOnly(false);
         toast({
             title: "Announcement Posted",
-            description: "Your announcement is now live for everyone to see.",
+            description: "Your announcement is now live.",
         });
     };
 
@@ -114,29 +115,16 @@ export function AnnouncementForm() {
                              </Button>
                         </div>
                     )}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                       <div className="space-y-2">
-                            <Label htmlFor="title">Title</Label>
-                            <Input
-                                id="title"
-                                placeholder="Announcement Title"
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                disabled={isLoading}
-                                className="text-lg font-semibold"
-                            />
-                        </div>
-                         <div className="space-y-2">
-                            <Label htmlFor="image-upload">Image (Optional)</Label>
-                             <Input
-                                id="image-upload"
-                                type="file"
-                                onChange={handleImageChange}
-                                disabled={isLoading}
-                                accept="image/*"
-                                className="pt-2 text-sm"
-                            />
-                        </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="title">Title</Label>
+                        <Input
+                            id="title"
+                            placeholder="Announcement Title"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            disabled={isLoading}
+                            className="text-lg font-semibold"
+                        />
                     </div>
                    
                     <div className="space-y-2">
@@ -149,6 +137,23 @@ export function AnnouncementForm() {
                             rows={4}
                             disabled={isLoading}
                         />
+                    </div>
+                     <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="space-y-2">
+                           <Label htmlFor="image-upload">Image (Optional)</Label>
+                            <Input
+                               id="image-upload"
+                               type="file"
+                               onChange={handleImageChange}
+                               disabled={isLoading}
+                               accept="image/*"
+                               className="pt-2 text-sm max-w-xs"
+                           />
+                       </div>
+                        <div className="flex items-center space-x-2">
+                            <Switch id="directors-only" checked={forDirectorsOnly} onCheckedChange={setForDirectorsOnly} disabled={isLoading} />
+                            <Label htmlFor="directors-only">For Directors Only</Label>
+                        </div>
                     </div>
                     <div className="flex justify-end">
                         <Button type="submit" disabled={isLoading}>

@@ -57,4 +57,5 @@ export interface Announcement {
   title: string;
   content: string;
   imageUrl?: string;
+  forDirectorsOnly?: boolean;
 }
