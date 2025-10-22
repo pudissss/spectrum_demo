@@ -79,11 +79,12 @@ export function LoginForm() {
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <p className="text-sm text-muted-foreground">Or quick login as:</p>
-        <div className="grid grid-cols-2 gap-2 w-full">
+        <div className="grid grid-cols-3 gap-2 w-full">
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('President')}>President</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('HOD')}>HOD</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Director')}>Director</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Lead')}>Lead</Button>
+            <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Treasurer')}>Treasurer</Button>
         </div>
         <Button variant="link" size="sm" onClick={() => router.push('/public/grievance')}>Submit a Grievance</Button>
       </CardFooter>

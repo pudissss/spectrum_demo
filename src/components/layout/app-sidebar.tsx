@@ -18,6 +18,7 @@ import {
   BookText,
   MessageSquareWarning,
   Users,
+  DollarSign,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { UserNav } from "./user-nav";
@@ -27,6 +28,7 @@ const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/focus-room", label: "Focus Room", icon: CalendarCheck },
   { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "HOD", "Director", "Lead"] },
+  { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "HOD"] },
   { href: "/dashboard/grievances", label: "Grievances", icon: MessageSquareWarning, isGrievance: true },
 ];
 
@@ -56,8 +58,10 @@ export function AppSidebar() {
 
             if (item.isGrievance) {
               const isPresidentOrHOD = user.role === 'President' || user.role === 'HOD';
-              const isResolvenceMember = user.wing === 'Resolvence' && (user.role === 'Director' || user.role === 'Lead');
-              if (!isPresidentOrHOD && !isResolvenceMember) {
+              const isResolvenceDirector = user.role === 'Director' && user.wing === 'Resolvence';
+              const isResolvenceLead = user.role === 'Lead' && user.wing === 'Resolvence';
+
+              if (!isPresidentOrHOD && !isResolvenceDirector && !isResolvenceLead) {
                 return null;
               }
             }

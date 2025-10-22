@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WeeklyLogViewer } from "@/components/logs/weekly-log-viewer";
 import { GrievanceManagement } from "@/components/grievances/grievance-management";
 import { WeeklyLogForm } from "@/components/logs/weekly-log-form";
+import { ExpenseTracker } from "@/components/expenses/expense-tracker";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -72,6 +73,10 @@ export default function DashboardPage() {
                 </Card>
             )}
         </div>
+      )}
+
+      {user.role === 'Treasurer' && (
+        <ExpenseTracker />
       )}
 
       <DirectorRatings />

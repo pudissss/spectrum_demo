@@ -64,11 +64,11 @@ const bookings: FocusRoomBooking[] = [
 export const ALL_BOOKINGS: FocusRoomBooking[] = bookings;
 
 const expenses: Expense[] = [
-    { id: 'exp-1', date: '2024-07-01', description: 'Initial budget allocation', amount: 50000, type: 'Income' },
-    { id: 'exp-2', date: '2024-07-05', description: 'Workshop materials', amount: 2500, type: 'Expense' },
-    { id: 'exp-3', date: '2024-07-10', description: 'Event banner printing', amount: 1200, type: 'Expense' },
-    { id: 'exp-4', date: '2024-07-15', description: 'Sponsorship from TechCorp', amount: 10000, type: 'Income' },
-    { id: 'exp-5', date: '2024-07-20', description: 'Catering for seminar', amount: 5000, type: 'Expense' },
+    { id: 'exp-1', date: '2024-07-01T10:00:00Z', description: 'Initial budget allocation', amount: 50000, type: 'Income' },
+    { id: 'exp-2', date: '2024-07-05T10:00:00Z', description: 'Workshop materials', amount: 2500, type: 'Expense' },
+    { id: 'exp-3', date: '2024-07-10T10:00:00Z', description: 'Event banner printing', amount: 1200, type: 'Expense' },
+    { id: 'exp-4', date: '2024-07-15T10:00:00Z', description: 'Sponsorship from TechCorp', amount: 10000, type: 'Income' },
+    { id: 'exp-5', date: '2024-07-20T10:00:00Z', description: 'Catering for seminar', amount: 5000, type: 'Expense' },
 ];
 
 export const ALL_EXPENSES: Expense[] = expenses;
