@@ -16,7 +16,7 @@ import {
   DropdownMenuSubContent
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { LogOut, User as UserIcon, ChevronsUpDown, Check, Users } from "lucide-react";
+import { LogOut, User as UserIcon, ChevronsUpDown, Check, Users, Bell } from "lucide-react";
 import { UserRole } from "@/lib/types";
 import { ALL_USERS } from "@/lib/data";
 import { useRouter } from "next/navigation";
@@ -38,6 +38,8 @@ export function UserNav() {
     }
     return name.substring(0, 2);
   }
+
+  const canAnnounce = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
 
   return (
     <DropdownMenu>
@@ -69,6 +71,12 @@ export function UserNav() {
             <UserIcon className="mr-2 h-4 w-4" />
             <span>Profile</span>
           </DropdownMenuItem>
+          {!canAnnounce && (
+             <DropdownMenuItem onClick={() => router.push('/dashboard/announcements')}>
+                <Bell className="mr-2 h-4 w-4" />
+                <span>Announcements</span>
+            </DropdownMenuItem>
+          )}
            <DropdownMenuSub>
             <DropdownMenuSubTrigger>
               <Users className="mr-2 h-4 w-4" />
