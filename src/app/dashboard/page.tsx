@@ -3,7 +3,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { WelcomeHeader } from "@/components/dashboard/welcome-header";
 import { StatsCards } from "@/components/dashboard/stats-cards";
-import { AnalyticsDashboard } from "@/components/dashboard/analytics-dashboard";
 import { DirectorRatings } from "@/components/dashboard/director-ratings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WeeklyLogViewer } from "@/components/logs/weekly-log-viewer";
@@ -26,7 +25,6 @@ export default function DashboardPage() {
       {isPrivileged && (
         <>
           <StatsCards />
-          <AnalyticsDashboard />
         </>
       )}
 
