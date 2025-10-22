@@ -2,11 +2,12 @@
 
 import { useAuth } from "@/hooks/use-auth";
 import { ALL_USERS } from "@/lib/data";
-import { User } from "@/lib/types";
+import { User, UserRole } from "@/lib/types";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { useMemo } from "react";
 
 const getRoleBadgeVariant = (role: User['role']) => {
     switch (role) {
@@ -25,8 +26,24 @@ const getRoleBadgeVariant = (role: User['role']) => {
 export function MembersList() {
     const { user } = useAuth();
     
-    // Only President and HOD can see this page.
-    if (user?.role !== 'President' && user?.role !== 'HOD') {
+    const visibleMembers = useMemo(() => {
+        if (!user) return [];
+
+        if (user.role === 'President' || user.role === 'HOD') {
+            return ALL_USERS;
+        }
+
+        if (user.role === 'Director' && user.wing) {
+            const leadershipRoles: UserRole[] = ['President', 'Secretary', 'Treasurer'];
+            return ALL_USERS.filter(member => 
+                leadershipRoles.includes(member.role) || member.wing === user.wing
+            );
+        }
+
+        return [];
+    }, [user]);
+
+    if (!user || visibleMembers.length === 0) {
         return (
             <Card>
                 <CardHeader>
@@ -50,8 +67,8 @@ export function MembersList() {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>All Members</CardTitle>
-                <CardDescription>A list of everyone in the student body.</CardDescription>
+                <CardTitle>Member Directory</CardTitle>
+                <CardDescription>A list of relevant members in the student body.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Table>
@@ -63,7 +80,7 @@ export function MembersList() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {ALL_USERS.map((member) => (
+                        {visibleMembers.map((member) => (
                             <TableRow key={member.id}>
                                 <TableCell>
                                     <div className="flex items-center gap-3">
