@@ -26,6 +26,7 @@ import { Logo } from "../icons/logo";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "HOD"] },
   { href: "/dashboard/focus-room", label: "Focus Room", icon: CalendarCheck },
   { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "HOD", "Director", "Lead"] },
   { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "HOD"] },
