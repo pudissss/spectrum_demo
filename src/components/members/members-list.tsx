@@ -93,7 +93,6 @@ export function MembersList() {
                             <TableHead>Name</TableHead>
                             <TableHead>Role</TableHead>
                             <TableHead>Wing</TableHead>
-                            <TableHead>User ID</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -115,7 +114,6 @@ export function MembersList() {
                                     <Badge variant={getRoleBadgeVariant(member.role)}>{member.role}</Badge>
                                 </TableCell>
                                 <TableCell>{member.wing || "N/A"}</TableCell>
-                                <TableCell className="font-mono text-xs">{member.id}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
