@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { StarRating } from "../shared/star-rating";
 
 const getRoleBadgeVariant = (role: User['role']) => {
     switch (role) {
@@ -26,6 +27,7 @@ const getRoleBadgeVariant = (role: User['role']) => {
 
 export function MembersList() {
     const { user } = useAuth();
+    const [users, setUsers] = useState<User[]>(ALL_USERS);
     
     const visibleMembers = useMemo(() => {
         if (!user) return [];
@@ -33,19 +35,27 @@ export function MembersList() {
         const isPrivileged = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
 
         if (isPrivileged) {
-            return ALL_USERS;
+            return users;
         }
 
         if (user.role === 'Director' && user.wing) {
             const leadershipRoles: UserRole[] = ['President', 'Vice President', 'Secretary', 'Treasurer'];
-            return ALL_USERS.filter(member => 
+            const wingMembers = users.filter(member => 
                 leadershipRoles.includes(member.role) || member.wing === user.wing
             );
+
+            return wingMembers.sort((a, b) => {
+                if (a.role === 'Director' && b.role !== 'Director') return -1;
+                if (a.role !== 'Director' && b.role === 'Director') return 1;
+                if (a.role === 'Lead' && b.role !== 'Lead') return -1;
+                if (a.role !== 'Lead' && b.role === 'Lead') return 1;
+                return 0;
+            });
         }
 
         if (user.role === 'Lead' && user.wing) {
             const leadershipRoles: UserRole[] = ['President', 'Vice President'];
-            const wingMembers = ALL_USERS.filter(member => 
+            const wingMembers = users.filter(member => 
                 leadershipRoles.includes(member.role) || member.wing === user.wing
             ).filter(member => member.role !== 'HOD');
 
@@ -57,7 +67,15 @@ export function MembersList() {
         }
 
         return [];
-    }, [user]);
+    }, [user, users]);
+
+     const handleRating = (leadId: string, rating: number) => {
+        if (user?.role !== 'Director') return;
+        // In a real app, this would be a server action
+        console.log(`Director ${user.name} rated lead ${leadId} with ${rating} stars`);
+        setUsers(currentUsers => currentUsers.map(u => u.id === leadId ? { ...u, rating } : u));
+    }
+
 
     if (!user || visibleMembers.length === 0) {
         return (
@@ -93,6 +111,7 @@ export function MembersList() {
                             <TableHead>Name</TableHead>
                             <TableHead>Role</TableHead>
                             <TableHead>Wing</TableHead>
+                            <TableHead className="text-right">Rating</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -114,6 +133,15 @@ export function MembersList() {
                                     <Badge variant={getRoleBadgeVariant(member.role)}>{member.role}</Badge>
                                 </TableCell>
                                 <TableCell>{member.wing || "N/A"}</TableCell>
+                                <TableCell className="text-right">
+                                     {member.role === 'Lead' && (
+                                        <StarRating 
+                                            rating={member.rating || 0} 
+                                            isEditable={user?.role === 'Director' && user.wing === member.wing}
+                                            onRate={(rating) => handleRating(member.id, rating)}
+                                        />
+                                    )}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
