@@ -29,7 +29,6 @@ const users: User[] = [
   { id: 'dir-events', name: 'Eleanor Vance', email: 'eleanor.v@focus.com', role: 'Director', wing: 'Events', rating: 4.5 },
   { id: 'lead-events-1', name: 'Frank Wright', email: 'frank.w@focus.com', role: 'Lead', wing: 'Events', rating: 4 },
   
-  { id: 'user-member', name: 'Grace Hall', email: 'grace.h@focus.com', role: 'Member', wing: 'Academics'},
 ];
 
 export const ALL_USERS: User[] = users;
