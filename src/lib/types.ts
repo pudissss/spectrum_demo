@@ -56,4 +56,5 @@ export interface Announcement {
   authorRole: UserRole;
   title: string;
   content: string;
+  imageUrl?: string;
 }
