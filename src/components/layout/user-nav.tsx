@@ -39,7 +39,7 @@ export function UserNav() {
     return name.substring(0, 2);
   }
 
-  const canAnnounce = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
+  const canAnnounce = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Secretary';
 
   return (
     <DropdownMenu>
