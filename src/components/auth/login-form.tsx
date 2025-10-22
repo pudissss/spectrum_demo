@@ -14,6 +14,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Logo } from "../icons/logo";
 import { UserRole } from "@/lib/types";
+import Link from "next/link";
 
 export function LoginForm() {
   const { switchRole } = useAuth();
@@ -40,7 +41,7 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
          <div className="text-center text-muted-foreground">
-            <p>Please select your role to continue.</p>
+            <p>Please select your role to log in.</p>
         </div>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
@@ -52,7 +53,9 @@ export function LoginForm() {
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Lead')}>Lead</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Treasurer')}>Treasurer</Button>
         </div>
-        <Button variant="link" size="sm" onClick={() => router.push('/public/grievance')}>Submit a Grievance</Button>
+        <Button variant="link" size="sm" asChild>
+          <Link href="/public/grievance">Submit a Grievance</Link>
+        </Button>
       </CardFooter>
     </Card>
   );
