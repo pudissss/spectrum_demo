@@ -1,0 +1,54 @@
+"use client";
+
+import { useAuth } from "@/hooks/use-auth";
+import { WeeklyLogForm } from "@/components/logs/weekly-log-form";
+import { WeeklyLogViewer } from "@/components/logs/weekly-log-viewer";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+export default function LogsPage() {
+    const { user } = useAuth();
+
+    if (!user) return null;
+
+    const canViewAll = user.role === 'President' || user.role === 'HOD';
+    const isDirector = user.role === 'Director';
+    const isLead = user.role === 'Lead';
+
+    return (
+        <div className="space-y-8">
+            <div>
+                <h1 className="text-3xl font-bold tracking-tight font-headline">Weekly Logs</h1>
+                <p className="text-muted-foreground">
+                    {isLead ? "Submit your weekly progress report." : "Review weekly logs from the wings."}
+                </p>
+            </div>
+            
+            {isLead && (
+                 <Card>
+                    <CardHeader>
+                        <CardTitle>New Log Entry</CardTitle>
+                        <CardDescription>Fill out the details of your work for the past week.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <WeeklyLogForm />
+                    </CardContent>
+                </Card>
+            )}
+
+            {(canViewAll || isDirector) && (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Submitted Logs</CardTitle>
+                        <CardDescription>
+                            {canViewAll ? "Showing logs from all wings." : `Showing logs from your wing: ${user.wing}.`}
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <WeeklyLogViewer />
+                    </CardContent>
+                </Card>
+            )}
+
+        </div>
+    );
+}
