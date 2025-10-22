@@ -16,7 +16,7 @@ import {
   DropdownMenuSubContent
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { LogOut, User as UserIcon, ChevronsUpDown, Check } from "lucide-react";
+import { LogOut, User as UserIcon, ChevronsUpDown, Check, Users } from "lucide-react";
 import { UserRole } from "@/lib/types";
 import { ALL_USERS } from "@/lib/data";
 
