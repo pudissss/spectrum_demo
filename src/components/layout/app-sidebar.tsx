@@ -27,7 +27,7 @@ const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/focus-room", label: "Focus Room", icon: CalendarCheck },
   { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "HOD", "Director", "Lead"] },
-  { href: "/dashboard/grievances", label: "Grievances", icon: MessageSquareWarning, roles: ["President", "HOD", "Director", "Lead"] },
+  { href: "/dashboard/grievances", label: "Grievances", icon: MessageSquareWarning, isGrievance: true },
 ];
 
 export function AppSidebar() {
@@ -48,9 +48,20 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarMenu>
           {menuItems.map((item) => {
-            if (item.roles && user && !item.roles.includes(user.role)) {
+            if (!user) return null;
+
+            if (item.roles && !item.roles.includes(user.role)) {
                 return null;
             }
+
+            if (item.isGrievance) {
+              const isPresidentOrHOD = user.role === 'President' || user.role === 'HOD';
+              const isResolvenceMember = user.wing === 'Resolvence' && (user.role === 'Director' || user.role === 'Lead');
+              if (!isPresidentOrHOD && !isResolvenceMember) {
+                return null;
+              }
+            }
+            
             const isActive = pathname === item.href;
             return (
               <SidebarMenuItem key={item.href}>

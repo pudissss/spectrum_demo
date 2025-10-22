@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ALL_GRIEVANCES, ALL_USERS } from "@/lib/data";
 import { Grievance, GrievanceStatus, User } from "@/lib/types";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -36,6 +36,23 @@ export function GrievanceManagement() {
     const { user } = useAuth();
     const [grievances, setGrievances] = useState<Grievance[]>(ALL_GRIEVANCES);
 
+    const filteredGrievances = useMemo(() => {
+        if (!user) return [];
+        const isPresidentOrHOD = user.role === 'President' || user.role === 'HOD';
+        const isDirector = user.role === 'Director';
+
+        if (isPresidentOrHOD || (isDirector && user.wing === 'Resolvence')) {
+            return grievances;
+        }
+
+        if (user.role === 'Lead' && user.wing === 'Resolvence') {
+            return grievances.filter(g => g.assignedTo === user.id);
+        }
+
+        return [];
+    }, [grievances, user]);
+
+
     const isResolvenceMember = user?.wing === 'Resolvence' || user?.role === 'President' || user?.role === 'HOD';
     const leads = ALL_USERS.filter(u => u.role === 'Lead' && u.wing === 'Resolvence');
 
@@ -48,6 +65,10 @@ export function GrievanceManagement() {
     const getAssigneeName = (leadId?: string) => {
         if (!leadId) return "Unassigned";
         return ALL_USERS.find(u => u.id === leadId)?.name || "Unknown";
+    }
+    
+    if (filteredGrievances.length === 0) {
+        return <p className="text-muted-foreground text-center py-8">No grievances found.</p>
     }
 
     return (
@@ -62,7 +83,7 @@ export function GrievanceManagement() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {grievances.map((grievance) => (
+                {filteredGrievances.map((grievance) => (
                     <TableRow key={grievance.id}>
                         <TableCell className="text-muted-foreground">{format(parseISO(grievance.submittedAt), 'MMM d, yyyy')}</TableCell>
                         <TableCell className="max-w-sm truncate">{grievance.description}</TableCell>

@@ -52,14 +52,26 @@ export default function DashboardPage() {
       )}
 
       {user.role === 'Lead' && (
-        <Card>
-            <CardHeader>
-                <CardTitle>Submit Your Weekly Log</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <WeeklyLogForm />
-            </CardContent>
-        </Card>
+         <div className="grid gap-8 lg:grid-cols-2">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Submit Your Weekly Log</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <WeeklyLogForm />
+                </CardContent>
+            </Card>
+            {user.wing === 'Resolvence' && (
+                <Card>
+                    <CardHeader>
+                        <CardTitle>My Assigned Grievances</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <GrievanceManagement />
+                    </CardContent>
+                </Card>
+            )}
+        </div>
       )}
 
       <DirectorRatings />
