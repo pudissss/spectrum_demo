@@ -26,7 +26,7 @@ import { Logo } from "../icons/logo";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "Vice President", "HOD", "Director"] },
+  { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
   { href: "/dashboard/focus-room", label: "Focus Room", icon: CalendarCheck },
   { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
   { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "Vice President", "HOD"] },
@@ -60,9 +60,9 @@ export function AppSidebar() {
             if (item.isGrievance) {
               const isPresidential = user.role === 'President' || user.role === 'Vice President';
               const isHOD = user.role === 'HOD';
-              const isResolvenceMember = user.wing === 'Resolvence';
+              const isResolvenceDirector = user.role === 'Director' && user.wing === 'Resolvence';
 
-              if (!isPresidential && !isHOD && !isResolvenceMember) {
+              if (!isPresidential && !isHOD && !isResolvenceDirector) {
                 return null;
               }
             }

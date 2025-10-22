@@ -30,7 +30,9 @@ export function MembersList() {
     const visibleMembers = useMemo(() => {
         if (!user) return [];
 
-        if (user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD') {
+        const isPrivileged = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
+
+        if (isPrivileged) {
             return ALL_USERS;
         }
 
@@ -39,6 +41,19 @@ export function MembersList() {
             return ALL_USERS.filter(member => 
                 leadershipRoles.includes(member.role) || member.wing === user.wing
             );
+        }
+
+        if (user.role === 'Lead' && user.wing) {
+            const leadershipRoles: UserRole[] = ['President', 'Vice President'];
+            const wingMembers = ALL_USERS.filter(member => 
+                leadershipRoles.includes(member.role) || member.wing === user.wing
+            ).filter(member => member.role !== 'HOD');
+
+            return wingMembers.sort((a, b) => {
+                if (a.role === 'Director' && b.role !== 'Director') return -1;
+                if (a.role !== 'Director' && b.role === 'Director') return 1;
+                return 0;
+            });
         }
 
         return [];
