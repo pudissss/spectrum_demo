@@ -11,6 +11,8 @@ import { WeeklyLogForm } from "@/components/logs/weekly-log-form";
 import { ExpenseTracker } from "@/components/expenses/expense-tracker";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { AnnouncementForm } from "@/components/dashboard/announcement-form";
+import { AnnouncementsList } from "@/components/dashboard/announcements-list";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -26,8 +28,11 @@ export default function DashboardPage() {
       {isPrivileged && (
         <>
           <StatsCards />
+          <AnnouncementForm />
         </>
       )}
+
+      <AnnouncementsList />
 
       {user.role === 'Director' && user.wing && (
         <div className="grid gap-8 lg:grid-cols-2">

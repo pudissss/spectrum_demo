@@ -1,4 +1,4 @@
-import { User, Wing, WeeklyLog, Grievance, FocusRoomBooking, Expense, UserRole } from './types';
+import { User, Wing, WeeklyLog, Grievance, FocusRoomBooking, Expense, UserRole, Announcement } from './types';
 
 export const WINGS: Wing[] = [
   "Alumni & IRP",
@@ -73,3 +73,10 @@ const expenses: Expense[] = [
 ];
 
 export const ALL_EXPENSES: Expense[] = expenses;
+
+const announcements: Announcement[] = [
+    { id: 'ann-1', date: '2024-07-25T10:00:00Z', title: 'Annual General Meeting', content: 'The Annual General Meeting will be held on August 1st, 2024. All members are requested to attend.', authorName: 'Alex Thompson', authorRole: 'President' },
+    { id: 'ann-2', date: '2024-07-24T15:00:00Z', title: 'New Website Launch', content: 'The new student body website is now live! Check it out and give us your feedback.', authorName: 'Ben Carter', authorRole: 'HOD' },
+];
+
+export const ALL_ANNOUNCEMENTS: Announcement[] = announcements;

@@ -48,3 +48,12 @@ export interface Expense {
   amount: number;
   type: 'Income' | 'Expense';
 }
+
+export interface Announcement {
+  id: string;
+  date: string;
+  authorName: string;
+  authorRole: UserRole;
+  title: string;
+  content: string;
+}

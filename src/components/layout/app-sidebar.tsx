@@ -20,6 +20,7 @@ import {
   Users,
   DollarSign,
   User,
+  Megaphone,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { UserNav } from "./user-nav";
@@ -27,6 +28,7 @@ import { Logo } from "../icons/logo";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone },
   { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
   { href: "/dashboard/focus-room", label: "Focus Room", icon: CalendarCheck },
   { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
