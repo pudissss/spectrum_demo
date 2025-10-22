@@ -2,10 +2,15 @@
 
 import { useAuth } from "@/hooks/use-auth";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
 
 export function WelcomeHeader() {
   const { user } = useAuth();
-  const today = new Date();
+  const [currentDate, setCurrentDate] = useState("");
+
+  useEffect(() => {
+    setCurrentDate(format(new Date(), "EEEE, MMMM d, yyyy"));
+  }, []);
 
   return (
     <div>
@@ -13,7 +18,7 @@ export function WelcomeHeader() {
         Welcome back, {user?.name.split(' ')[0]}!
       </h1>
       <p className="text-muted-foreground">
-        {format(today, "EEEE, MMMM d, yyyy")}
+        {currentDate}
       </p>
     </div>
   );
