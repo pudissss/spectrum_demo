@@ -32,7 +32,7 @@ export function MembersList() {
     const visibleMembers = useMemo(() => {
         if (!user) return [];
 
-        const isPrivileged = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
+        const isPrivileged = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Superadmin';
 
         if (isPrivileged) {
             return users;

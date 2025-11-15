@@ -24,7 +24,7 @@ export function AnnouncementForm() {
     const [forDirectorsOnly, setForDirectorsOnly] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const canAnnounce = user?.role === 'President' || user?.role === 'Vice President' || user?.role === 'HOD' || user?.role === 'Secretary';
+    const canAnnounce = user?.role === 'President' || user?.role === 'Vice President' || user?.role === 'HOD' || user?.role === 'Secretary' || user?.role === 'Superadmin';
 
     if (!canAnnounce) {
         return null;

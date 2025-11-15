@@ -18,7 +18,7 @@ export function AnnouncementsList() {
     const announcements = useMemo(() => {
         if (!user) return [];
         
-        const canViewAll = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
+        const canViewAll = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Superadmin';
         
         if (canViewAll) {
             return allAnnouncements;
