@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Calendar as CalendarIcon, Clock, User, PlusCircle, Trash2 } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
 
 const timeSlots = Array.from({ length: 12 }, (_, i) => {
     const hour = i + 8; // 8 AM to 7 PM
@@ -31,6 +32,14 @@ export function BookingSystem() {
     // Timer state
     const [activeMeeting, setActiveMeeting] = useState<FocusRoomBooking | null>(null);
     const [timer, setTimer] = useState(0);
+
+    // For dynamic updates
+    const [now, setNow] = useState(new Date());
+
+    useEffect(() => {
+        const timerId = setInterval(() => setNow(new Date()), 60 * 1000); // Update every minute
+        return () => clearInterval(timerId);
+    }, []);
 
     useEffect(() => {
         let interval: NodeJS.Timeout | null = null;
@@ -108,12 +117,20 @@ export function BookingSystem() {
         setIsLoading(false);
     };
 
+     const handleCancelBooking = (bookingId: string) => {
+        setBookings(bookings.filter(b => b.id !== bookingId));
+        toast({
+            title: "Booking Canceled",
+            description: "Your reservation has been removed.",
+        });
+    };
+
     const upcomingBookings = useMemo(() => 
         bookings
-            .filter(b => new Date(b.date + 'T' + b.startTime) >= new Date())
+            .filter(b => new Date(b.date + 'T' + b.startTime) >= now)
             .sort((a,b) => new Date(a.date + 'T' + a.startTime).getTime() - new Date(b.date + 'T' + b.startTime).getTime())
             .slice(0, 5),
-    [bookings]);
+    [bookings, now]);
 
     const formatTimer = (seconds: number) => {
         const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
@@ -211,13 +228,35 @@ export function BookingSystem() {
                                     </div>
                                     <div className="flex-grow">
                                         <p className="font-semibold">{b.title}</p>
-                                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                                            <span className="flex items-center gap-1"><Clock className="w-3 h-3"/> {b.startTime} - {b.endTime}</span>
                                            <span className="flex items-center gap-1"><User className="w-3 h-3"/> {b.bookedByName}</span>
                                         </div>
                                     </div>
                                     {user?.id === b.bookedBy && !activeMeeting &&
-                                        <Button size="sm" onClick={() => setActiveMeeting(b)}>Start</Button>}
+                                        <div className="flex gap-1">
+                                            <Button size="sm" onClick={() => setActiveMeeting(b)}>Start</Button>
+                                            <AlertDialog>
+                                                <AlertDialogTrigger asChild>
+                                                    <Button variant="destructive" size="icon" className="h-9 w-9"><Trash2 className="h-4 w-4"/></Button>
+                                                </AlertDialogTrigger>
+                                                <AlertDialogContent>
+                                                    <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        This action cannot be undone. This will permanently cancel your booking.
+                                                    </AlertDialogDescription>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                    <AlertDialogCancel>Back</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => handleCancelBooking(b.id)}>
+                                                        Yes, Cancel
+                                                    </AlertDialogAction>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog>
+                                        </div>
+                                    }
                                 </li>
                             ))}
                         </ul>
@@ -228,5 +267,3 @@ export function BookingSystem() {
         </div>
     );
 }
-
-    
