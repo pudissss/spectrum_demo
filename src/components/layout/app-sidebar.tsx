@@ -20,6 +20,7 @@ import {
   Users,
   DollarSign,
   Megaphone,
+  ShieldCheck,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { UserNav } from "./user-nav";
@@ -27,12 +28,13 @@ import { Logo } from "../icons/logo";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone, roles: ["President", "Vice President", "HOD", "Secretary"] },
-  { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
+  { href: "/dashboard/announcements", label: "Announcements", icon: Megaphone, roles: ["President", "Vice President", "HOD", "Secretary", "Superadmin"] },
+  { href: "/dashboard/members", label: "Members", icon: Users, roles: ["President", "Vice President", "HOD", "Director", "Lead", "Superadmin"] },
   { href: "/dashboard/focus-room", label: "Focus Room", icon: CalendarCheck },
-  { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "Vice President", "HOD", "Director", "Lead"] },
-  { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "Vice President", "HOD"] },
+  { href: "/dashboard/logs", label: "Logs", icon: BookText, roles: ["President", "Vice President", "HOD", "Director", "Lead", "Superadmin"] },
+  { href: "/dashboard/expenses", label: "Expenses", icon: DollarSign, roles: ["Treasurer", "President", "Vice President", "HOD", "Superadmin"] },
   { href: "/dashboard/grievances", label: "Grievances", icon: MessageSquareWarning, isGrievance: true },
+  { href: "/dashboard/audit-log", label: "Audit Log", icon: ShieldCheck, roles: ["Superadmin"] },
 ];
 
 export function AppSidebar() {
@@ -63,8 +65,9 @@ export function AppSidebar() {
               const isPresidential = user.role === 'President' || user.role === 'Vice President';
               const isHOD = user.role === 'HOD';
               const isResolvenceMember = user.wing === 'Resolvence' && (user.role === 'Director' || user.role === 'Lead');
+              const isSuperadmin = user.role === 'Superadmin';
 
-              if (!isPresidential && !isHOD && !isResolvenceMember) {
+              if (!isPresidential && !isHOD && !isResolvenceMember && !isSuperadmin) {
                 return null;
               }
             }

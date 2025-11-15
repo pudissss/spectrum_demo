@@ -1,4 +1,4 @@
-import { User, Wing, WeeklyLog, Grievance, FocusRoomBooking, Expense, UserRole, Announcement } from './types';
+import { User, Wing, WeeklyLog, Grievance, FocusRoomBooking, Expense, UserRole, Announcement, AuditLogEntry } from './types';
 
 export const WINGS: Wing[] = [
   "Alumni & IRP",
@@ -12,6 +12,7 @@ export const WINGS: Wing[] = [
 ];
 
 const users: User[] = [
+  { id: 'user-sadmin', name: 'Admin User', email: 'superadmin@focus.com', role: 'Superadmin' },
   { id: 'user-pres', name: 'Alex Thompson', email: 'president@focus.com', role: 'President' },
   { id: 'user-vp', name: 'Samantha Miller', email: 'vp@focus.com', role: 'Vice President' },
   { id: 'user-hod', name: 'Ben Carter', email: 'hod@focus.com', role: 'HOD' },
@@ -44,10 +45,10 @@ const weeklyLogs: WeeklyLog[] = [
 export const ALL_LOGS: WeeklyLog[] = weeklyLogs;
 
 const grievances: Grievance[] = [
-  { id: 'grv-1', submittedAt: '2024-07-20T10:00:00Z', description: 'Wi-Fi issues in the library.', status: 'Resolved', assignedTo: 'lead-res-1' },
-  { id: 'grv-2', submittedAt: '2024-07-21T11:30:00Z', description: 'Cafeteria food quality has degraded.', status: 'In Progress', assignedTo: 'lead-res-2' },
-  { id: 'grv-3', submittedAt: '2024-07-22T09:00:00Z', description: 'Not enough seating in the common area.', status: 'Submitted' },
-  { id: 'grv-4', submittedAt: '2024-07-23T14:00:00Z', description: 'Broken projector in room 201.', status: 'In Progress', assignedTo: 'lead-res-1' },
+  { id: 'grv-1', submittedAt: '2024-07-20T10:00:00Z', description: 'Wi-Fi issues in the library.', status: 'Resolved', assignedTo: 'lead-res-1', idNumber: '23000123', grievanceType: 'Infrastructure' },
+  { id: 'grv-2', submittedAt: '2024-07-21T11:30:00Z', description: 'Cafeteria food quality has degraded.', status: 'In Progress', assignedTo: 'lead-res-2', idNumber: '23000456', grievanceType: 'Personal' },
+  { id: 'grv-3', submittedAt: '2024-07-22T09:00:00Z', description: 'Not enough seating in the common area.', status: 'Submitted', idNumber: '24000789', grievanceType: 'Infrastructure' },
+  { id: 'grv-4', submittedAt: '2024-07-23T14:00:00Z', description: 'Broken projector in room 201.', status: 'In Progress', assignedTo: 'lead-res-1', idNumber: '22000111', grievanceType: 'Infrastructure' },
 ];
 
 export const ALL_GRIEVANCES: Grievance[] = grievances;
@@ -94,3 +95,7 @@ const announcements: Announcement[] = [
 ];
 
 export const ALL_ANNOUNCEMENTS: Announcement[] = announcements;
+
+const loginLogs: AuditLogEntry[] = [];
+
+export const ALL_LOGIN_LOGS: AuditLogEntry[] = loginLogs;

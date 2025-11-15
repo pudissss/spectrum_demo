@@ -11,7 +11,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string) => boolean;
   logout: () => void;
-  switchRole: (role: UserRole) => void;
+  switchRole: (role: UserRole) => User | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -56,7 +56,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (newUser) {
       setUser(newUser);
       localStorage.setItem('focus-user', JSON.stringify(newUser));
+      return newUser;
     }
+    return null;
   };
 
   return (

@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Logo } from "../icons/logo";
 import { UserRole } from "@/lib/types";
 import Link from "next/link";
+import { ALL_LOGIN_LOGS } from "@/lib/data";
 
 export function LoginForm() {
   const { switchRole } = useAuth();
@@ -22,7 +23,17 @@ export function LoginForm() {
   const { toast } = useToast();
 
   const handleQuickLogin = (role: UserRole) => {
-    switchRole(role);
+    const user = switchRole(role);
+    if (user) {
+       ALL_LOGIN_LOGS.unshift({
+        id: `log-${Date.now()}`,
+        userId: user.id,
+        userName: user.name,
+        userRole: user.role,
+        timestamp: new Date().toISOString(),
+        action: 'Login'
+      });
+    }
     router.push('/dashboard');
      toast({
         title: `Switched to ${role}`,
@@ -51,7 +62,8 @@ export function LoginForm() {
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('HOD')}>HOD</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Director')}>Director</Button>
             <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Lead')}>Lead</Button>
-            <Button variant="outline" size="sm" onClick={() => handleQuickLogin('Treasurer')}>Treasurer</Button>
+            <Button variant="outline" size-="sm" onClick={() => handleQuickLogin('Treasurer')}>Treasurer</Button>
+            <Button variant="destructive" className="col-span-3" size="sm" onClick={() => handleQuickLogin('Superadmin')}>Superadmin</Button>
         </div>
         <Button variant="link" size="sm" asChild>
           <Link href="/public/grievance">Submit a Grievance</Link>

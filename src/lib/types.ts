@@ -1,4 +1,4 @@
-export type UserRole = "President" | "Vice President" | "HOD" | "Director" | "Lead" | "Treasurer" | "Secretary";
+export type UserRole = "Superadmin" | "President" | "Vice President" | "HOD" | "Director" | "Lead" | "Treasurer" | "Secretary";
 
 export type Wing = "Alumni & IRP" | "Tech & Society" | "Academics" | "Events" | "Resolvence" | "Provision" | "Voice" | "Strategic Planning";
 
@@ -64,4 +64,13 @@ export interface Announcement {
   content: string;
   imageUrl?: string;
   forDirectorsOnly?: boolean;
+}
+
+export interface AuditLogEntry {
+  id: string;
+  userId: string;
+  userName: string;
+  userRole: UserRole;
+  timestamp: string;
+  action: 'Login' | 'Logout' | 'Switch Role';
 }

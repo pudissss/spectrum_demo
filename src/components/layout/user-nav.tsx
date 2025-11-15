@@ -18,14 +18,17 @@ import {
 import { Button } from "../ui/button";
 import { LogOut, User as UserIcon, ChevronsUpDown, Check, Users, Bell } from "lucide-react";
 import { UserRole } from "@/lib/types";
-import { ALL_USERS } from "@/lib/data";
+import { ALL_LOGIN_LOGS, ALL_USERS } from "@/lib/data";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 const availableRoles = Array.from(new Set(ALL_USERS.map(u => u.role)));
 
 export function UserNav() {
   const { user, logout, switchRole } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
+
 
   if (!user) {
     return null;
@@ -39,7 +42,24 @@ export function UserNav() {
     return name.substring(0, 2);
   }
 
-  const canAnnounce = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Secretary';
+  const handleSwitchRole = (role: UserRole) => {
+    const switchedUser = switchRole(role);
+     if (switchedUser) {
+       ALL_LOGIN_LOGS.unshift({
+        id: `log-${Date.now()}`,
+        userId: switchedUser.id,
+        userName: switchedUser.name,
+        userRole: switchedUser.role,
+        timestamp: new Date().toISOString(),
+        action: 'Switch Role'
+      });
+      toast({
+        title: `Switched to ${role}`,
+      });
+    }
+  }
+
+  const canAnnounce = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Secretary' || user.role === 'Superadmin';
 
   return (
     <DropdownMenu>
@@ -85,7 +105,7 @@ export function UserNav() {
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 {availableRoles.map(role => (
-                  <DropdownMenuItem key={role} onClick={() => switchRole(role as UserRole)}>
+                  <DropdownMenuItem key={role} onClick={() => handleSwitchRole(role as UserRole)}>
                     <Check className={`mr-2 h-4 w-4 ${user.role === role ? "opacity-100" : "opacity-0"}`} />
                     {role}
                   </DropdownMenuItem>
