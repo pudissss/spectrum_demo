@@ -10,20 +10,21 @@ export default function LogsPage() {
 
     if (!user) return null;
 
-    const canViewAll = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD';
+    const canViewAll = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Superadmin' || user.role === 'Secretary';
     const isDirector = user.role === 'Director';
     const isLead = user.role === 'Lead';
+    const canSubmit = isLead || isDirector;
 
     return (
         <div className="space-y-8">
             <div>
                 <h1 className="text-3xl font-bold tracking-tight font-headline">Weekly Logs</h1>
                 <p className="text-muted-foreground">
-                    {isLead ? "Submit your weekly progress report." : "Review weekly logs from the wings."}
+                    {canSubmit ? "Submit your weekly progress report." : "Review weekly logs from the wings."}
                 </p>
             </div>
             
-            {isLead && (
+            {canSubmit && (
                  <Card>
                     <CardHeader>
                         <CardTitle>New Log Entry</CardTitle>
@@ -35,12 +36,12 @@ export default function LogsPage() {
                 </Card>
             )}
 
-            {(canViewAll || isDirector) && (
+            {(canViewAll) && (
                 <Card>
                     <CardHeader>
                         <CardTitle>Submitted Logs</CardTitle>
                         <CardDescription>
-                            {canViewAll ? "Showing logs from all wings." : `Showing logs from your wing: ${user.wing}.`}
+                            {user.role === 'Director' && user.wing ? `Showing logs from your wing: ${user.wing}.` : "Showing all submitted logs."}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>

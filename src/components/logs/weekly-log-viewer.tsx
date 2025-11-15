@@ -26,7 +26,7 @@ export function WeeklyLogViewer() {
 
     const filteredLogs = useMemo(() => {
         if (!user) return [];
-        if (user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Superadmin') {
+        if (user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Superadmin' || user.role === 'Secretary') {
             return ALL_LOGS;
         }
         if (user.role === 'Director' && user.wing) {
