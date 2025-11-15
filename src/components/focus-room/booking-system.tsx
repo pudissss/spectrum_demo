@@ -41,7 +41,9 @@ export function BookingSystem() {
         } else if (!activeMeeting && timer !== 0) {
             clearInterval(interval!);
         }
-        return () => clearInterval(interval!);
+        return () => {
+            if (interval) clearInterval(interval);
+        };
     }, [activeMeeting, timer]);
 
     const bookingsOnSelectedDate = useMemo(() => {
@@ -226,3 +228,5 @@ export function BookingSystem() {
         </div>
     );
 }
+
+    
