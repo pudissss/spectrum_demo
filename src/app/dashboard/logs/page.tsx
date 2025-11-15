@@ -10,7 +10,7 @@ export default function LogsPage() {
 
     if (!user) return null;
 
-    const canViewAll = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Superadmin' || user.role === 'Secretary';
+    const canView = user.role === 'President' || user.role === 'Vice President' || user.role === 'HOD' || user.role === 'Superadmin' || user.role === 'Secretary' || user.role === 'Director';
     const isDirector = user.role === 'Director';
     const isLead = user.role === 'Lead';
     const canSubmit = isLead || isDirector;
@@ -36,7 +36,7 @@ export default function LogsPage() {
                 </Card>
             )}
 
-            {(canViewAll) && (
+            {canView && (
                 <Card>
                     <CardHeader>
                         <CardTitle>Submitted Logs</CardTitle>
